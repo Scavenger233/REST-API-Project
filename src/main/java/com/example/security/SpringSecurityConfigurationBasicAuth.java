@@ -20,6 +20,12 @@ public class SpringSecurityConfigurationBasicAuth {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		
+		//This allows non-browser POST requests to go through.
+		http.csrf().disable(); 
+		//This ensures that the H2 console can be properly embedded in a webpage.
+		http.headers().frameOptions().disable();
+		
 		http.headers().addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"));
 
 		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest()
