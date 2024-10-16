@@ -43,17 +43,17 @@ class BookControllerTest {
     private static final ObjectMapper om = new ObjectMapper();
 
     //TODO move to base class as sample data
-    Book mockBook = new Book(10001, "pocky", "Spring Boot Introduction");
+    Book mockBook = new Book(10001, "GoneWithTheWind", "Tomorrow is another day!");
 
-    String exampleBookJson = "{\"id\":10001,\"bookName\":\"pocky\",\"bookDescription\":\"Spring Boot Introduction\"}";
+String exampleBookJson = "{\"id\":10001,\"bookName\":\"GoneWithTheWind\",\"description\":\"Tomorrow is another day!\"}";
 
     @Test
     public void getBook() throws Exception {
 
-        Mockito.when(bookService.getBook("pocky",10001)).thenReturn(mockBook);
+        Mockito.when(bookService.getBook("GoneWithTheWind",10001)).thenReturn(mockBook);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/library/pocky/books/10001").accept(
+                "/library/GoneWithTheWind/books/10001").accept(
                 MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -65,12 +65,12 @@ class BookControllerTest {
     @Test
     public void createBook() throws Exception {
 
-    	Book book = new Book(10001, "pocky", "Spring Boot Introduction");
+    	Book book = new Book(10001, "GoneWithTheWind", "Tomorrow is another day!");
 
         Mockito.when(bookService.createBook(Mockito.anyString(), Mockito.any(Book.class))).thenReturn(book);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/instructors/pocky/books").content(exampleBookJson)
+                .post("/library/GoneWithTheWind/books").content(exampleBookJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -79,7 +79,7 @@ class BookControllerTest {
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
 
-        assertEquals("http://localhost/instructors/pocky/books/10001",
+        assertEquals("http://localhost/library/GoneWithTheWind/books/10001",
                 response.getHeader(HttpHeaders.LOCATION));
 
     }
@@ -87,14 +87,14 @@ class BookControllerTest {
     @Test
     public void updateBook() throws Exception {
 
-    	Book book = new Book(10001, "pocky", "Spring Boot Introduction");
+    	Book book = new Book(10001, "GoneWithTheWind", "Tomorrow is another day!");
 
         Mockito.when(bookService.updateBook(Mockito.anyString(), Mockito.anyLong(), Mockito.any(Book.class))).thenReturn(book);
         
         String bookString = om.writeValueAsString(book);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/instructors/pocky/books/10001")
+                .put("/library/GoneWithTheWind/books/10001")
                 .contentType(MediaType.APPLICATION_JSON).content(bookString);
         
 
@@ -111,10 +111,10 @@ class BookControllerTest {
     @Test
     public void deleteBook() throws Exception {
 
-    	doNothing().when(bookService).deleteBook("pocky", Long.valueOf(10001));
+    	doNothing().when(bookService).deleteBook("GoneWithTheWind", Long.valueOf(10001));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/instructors/pocky/books/10001");
+                .delete("/library/GoneWithTheWind/books/10001");
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 

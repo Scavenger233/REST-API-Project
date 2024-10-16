@@ -27,6 +27,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -43,43 +44,43 @@ public class BookControllerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     @Order(1)
-    public void addbook() {
+    public void addBook() {
 
-    	Book book = new Book(10001, "pocky", "Spring Boot Introduction");
+    	Book book = new Book(10001, "GoneWithTheWind", "Tomorrow is another day!");
 
         HttpEntity<Book> entity = new HttpEntity<>(book, getHttpHeader());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                createURLWithPort("/api/library/pocky/books"),
+                createURLWithPort("/api/library/GoneWithTheWind/books"),
                 HttpMethod.POST, entity, String.class);
 
         String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode().value());
-        assertTrue(actual.contains("/library/pocky/books"));
+        assertTrue(actual.contains("/library/GoneWithTheWind/books"));
 
     }
     
     @Test
     @Order(2)
-    public void updatebook() throws JSONException {
+    public void updateBook() throws JSONException {
 
-    	Book book = new Book(1, "pocky", "Spring Boot Introduction updated");
+    	Book book = new Book(1, "GoneWithTheWind", "Tomorrow is another day! updated");
 
         HttpEntity<Book> entity = new HttpEntity<>(book, getHttpHeader());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                createURLWithPort("/api/library/pocky/books/1"),
+                createURLWithPort("/api/library/GoneWithTheWind/books/1"),
                 HttpMethod.PUT, entity, String.class);
         
         assertEquals(HttpStatus.OK.value(), response.getStatusCode().value());
 
-        String expected = "{\"id\":1,\"bookName\":\"pocky\",\"bookDescription\":\"Spring Boot Introduction updated\"}";
+        String expected = "{\"id\":1,\"bookName\":\"GoneWithTheWind\",\"description\":\"Tomorrow is another day! updated\"}";
 
         JSONAssert.assertEquals(expected, response.getBody(), false);
 
     }
-    
+    @WithMockUser(username = "pocky", roles = "USER")
     @Test
     @Order(3)
     public void testGetBook() throws JSONException, JsonProcessingException {
@@ -87,10 +88,10 @@ public class BookControllerIntegrationTest extends BaseIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(null, getHttpHeader());
 
         ResponseEntity<String> response1 = restTemplate.exchange(
-                createURLWithPort("/api/library/pocky/books/1"),
+                createURLWithPort("/api/library/GoneWithTheWind/books/1"),
                 HttpMethod.GET, entity, String.class);
 
-        String expected = "{\"id\":1,\"bookName\":\"pocky\",\"bookDescription\":\"Spring Boot Introduction updated\"}";
+        String expected = "{\"id\":1,\"bookName\":\"GoneWithTheWind\",\"description\":\"Tomorrow is another day! updated\"}";
 
         JSONAssert.assertEquals(expected, response1.getBody(), false);
         
@@ -99,19 +100,19 @@ public class BookControllerIntegrationTest extends BaseIntegrationTest {
 	@Test
 	@Order(4)
 	public void testDeleteBook() {
-		Book book = restTemplate.getForObject(createURLWithPort("/api/library/pocky/books/1"), Book.class);
+		Book book = restTemplate.getForObject(createURLWithPort("/api/library/GoneWithTheWind/books/1"), Book.class);
 		assertNotNull(book);
 
 		HttpEntity<String> entity = new HttpEntity<>(null, getHttpHeader());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                createURLWithPort("/api/library/pocky/books/1"),
+                createURLWithPort("/api/library/GoneWithTheWind/books/1"),
                 HttpMethod.DELETE, entity, String.class);
 		
         assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode().value());
 
 		try {
-			book = restTemplate.getForObject("/api/library/pocky/books/1", Book.class);
+			book = restTemplate.getForObject("/api/library/GoneWithTheWind/books/1", Book.class);
 		} catch (BookNotFoundException e) {
 			assertEquals("Book id not found : 1", e.getMessage());
 		}

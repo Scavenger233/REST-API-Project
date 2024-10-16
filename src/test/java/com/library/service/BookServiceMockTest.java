@@ -36,8 +36,8 @@ public class BookServiceMockTest {
     @Test
     public void getAllBooks() {
     	List<Book> books = Arrays.asList(
-                new Book(10001, "pocky", "Learn Java"),
-                new Book(10002, "pocky", "Learn Spring Boot"));
+                new Book(10001, "GoneWithTheWind", "Tomorrow is another day!"),
+                new Book(10002, "JavaBooks", "An in-depth guide to Spring Boot development."));
     	
     	when(bookRepository.findAll()).thenReturn(books);
 		assertEquals(books, bookService.getAllBooks("in28minutes"));
@@ -45,10 +45,10 @@ public class BookServiceMockTest {
     
     @Test
     public void getBook() {
-    	Book book = new Book(10001, "pocky", "Learn Java");
+    	Book book = new Book(10001, "GoneWithTheWind", "Tomorrow is another day!");
     	
     	when(bookRepository.findById(Long.valueOf(10001))).thenReturn(Optional.of(book));
-		assertEquals(book, bookService.getBook("pocky", Long.valueOf(10001)));
+		assertEquals(book, bookService.getBook("GoneWithTheWind", Long.valueOf(10001)));
     }
     
     @Test
@@ -56,7 +56,7 @@ public class BookServiceMockTest {
     	
     	BookNotFoundException exception = assertThrows(
     			BookNotFoundException.class,
-    	           () -> bookService.getBook("pocky", Long.valueOf(10001)),
+    	           () -> bookService.getBook("GoneWithTheWind", Long.valueOf(10001)),
     	           "Book id not found : 10001"
     	    );
 
@@ -66,28 +66,28 @@ public class BookServiceMockTest {
     @Test
     public void deleteBook() {
     	
-    	Book book = new Book(10001, "pocky", "Learn Java");
+    	Book book = new Book(10001, "GoneWithTheWind", "Tomorrow is another day!");
     	
     	when(bookRepository.findById(Long.valueOf(10001))).thenReturn(Optional.of(book));
-    	bookService.deleteBook("pocky", Long.valueOf(10001));
+    	bookService.deleteBook("GoneWithTheWind", Long.valueOf(10001));
 
 		verify(bookRepository, times(1)).deleteById(Long.valueOf(10001));
     }
     
     @Test
     public void updateBook() {
-    	Book book = new Book(10001, "in28minutes", "Learn Java");
+    	Book book = new Book(10001, "in28minutes", "Tomorrow is another day!");
     	
     	when(bookRepository.save(book)).thenReturn(book);
-		assertEquals(book, bookService.updateBook("pocky", Long.valueOf(10001), book));
+		assertEquals(book, bookService.updateBook("GoneWithTheWind", Long.valueOf(10001), book));
     }
     
     @Test
     public void createBook() {
-    	Book book = new Book(10001, "pocky", "Learn Java");
+    	Book book = new Book(10001, "GoneWithTheWind", "Tomorrow is another day!");
     	
     	when(bookRepository.save(book)).thenReturn(book);
-		assertEquals(book, bookService.createBook("pocky", book));
+		assertEquals(book, bookService.createBook("GoneWithTheWind", book));
 
     }
 
