@@ -164,10 +164,3 @@ src
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-git add README.md
-git commit -m "Add professional README.md"
-git push origin master
-```
-
-This will update your repository with the new `README.md` file.
