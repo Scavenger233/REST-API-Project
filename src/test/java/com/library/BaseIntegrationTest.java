@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 
 public class BaseIntegrationTest {
 	
-	public static String basicToken = "Basic Ynl0ZWNhcHRhaW46Ynl0ZWNhcHRhaW4=";
+	public static String basicToken = "Basic cG9ja3k6cG9ja3k=";
 	
 	public HttpHeaders getHttpHeader() {
 		
